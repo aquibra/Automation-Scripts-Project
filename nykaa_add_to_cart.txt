@@ -1,0 +1,64 @@
+
+<<<<<=====NYKAA add to cart functionality with selecnium java=====>>>>>
+
+  public class NaykaaCart {
+
+	public static void main(String[] args) {
+
+		WebDriver driver;
+
+		System.setProperty("webdriver.chrome.driver","E://Chrome_driver//Chrome_Driver117.exe");
+
+		driver = new ChromeDriver();
+       
+		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+
+		driver.get("https://www.nykaa.com/");
+
+		Actions action = new Actions(driver);
+
+		WebElement ele = driver.findElement(By.xpath("//input[@class='css-1upamjb']"));
+
+		action.moveToElement(ele).sendKeys("shampoo").sendKeys(Keys.ENTER).perform();
+
+		WebElement ele1 = driver.findElement(By.xpath("//span[@class='result-count']"));
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();",ele1);
+
+		String Expected = driver.findElement(By.xpath("(//div[@class='css-xrzmfa'])[1]")).getText();
+		System.out.println(Expected);
+
+		String P_win_id = driver.getWindowHandle();
+//		System.out.println("Parent win handle "+P_win_id);
+
+		driver.findElement(By.xpath("(//div[@class='css-xrzmfa'])[1]")).click();
+
+		Set<String> win_ids = driver.getWindowHandles();
+
+		for(String wind: win_ids)
+		{
+			if(!wind.equals(P_win_id))
+			{
+				driver.switchTo().window(wind);
+			}
+		}
+
+		WebElement ele2 =driver.findElement(By.xpath("//img[@alt='product']"));
+
+		JavascriptExecutor Js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();",ele2);
+		
+
+    	driver.findElement(By.xpath("(//span[@class='btn-text'])[1]")).click();
+    	
+    	driver.findElement(By.xpath("//button[@class='css-aesrxy']")).click();
+    	
+    	driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@class='css-acpm4k']")));
+    	
+    	String actual =driver.findElement(By.xpath("//span[@data-test-id='product-name']")).getText();
+             System.out.println(actual);
+
+	}                                             
+}
